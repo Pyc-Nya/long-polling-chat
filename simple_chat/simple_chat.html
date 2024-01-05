@@ -10,7 +10,7 @@
   <div class="container">
     <div class="chat"></div>
     <input type="text" class="input" placeholder="Enter the message...">
-    <div class="button" onclick="sendMessage()"></div>
+    <div class="button" onclick="sendMessage()">></div>
   </div>
   <script>
     "use strict";
@@ -90,7 +90,7 @@
         let d = await r.json();
 
         if (d.ok) {
-          addMessage(d.message);
+          if (d.message !== null) addMessage(d.message);
           poll();
         } else {
           throw new Error('failed to poll')
