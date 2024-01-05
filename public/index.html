@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hello node.js</title>
+</head>
+<body>
+  <h1>hello world</h1>
+  <p>posts:</p>
+  <button onclick="fetchGETData()">update</button>
+  <div class="posts">
+  </div>
+  <br>
+  <div class="new-post">
+    <input type="text" id="newPostContent" placeholder="Напишите что-нибудь...">
+    <button onclick="fetchPOSTData()">Post</button>
+  </div>
+  <script>
+    "use strict";
+
+    let postsDiv = document.querySelector('.posts');
+
+    async function fetchGETData() {
+      try {
+        let response = await fetch('http://localhost:8000/data');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let data = await response.json();
+        console.log(data);
+        
+        postsDiv.innerHTML = '';
+
+        data.forEach(post => {
+          let postElement = document.createElement('div');
+          postElement.textContent = post.text; 
+          postsDiv.appendChild(postElement);
+        });
+
+      } catch (error) {
+        console.error("Ошибка при получении данных: ", error);
+      }
+    }
+
+    async function fetchPOSTData() {
+      let postContent = document.getElementById('newPostContent'); 
+
+      try {
+        let response = await fetch('http://localhost:8000/data', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: postContent.value }) 
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        let data = await response.json();
+        console.log("Пост был добавлен:", data);
+        fetchGETData(); 
+        document.getElementById('newPostContent').value = ''; 
+
+      } catch (error) {
+        console.error("Ошибка при отправке данных: ", error);
+      }
+    }
+
+
+  </script>
+</body>
+</html>

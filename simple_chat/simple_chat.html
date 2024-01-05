@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./simple_chat.css">
+  <title>chat lol</title>
+</head>
+<body>
+  <div class="container">
+    <div class="chat"></div>
+    <input type="text" class="input" placeholder="Enter the message...">
+    <div class="button" onclick="sendMessage()"></div>
+  </div>
+  <script>
+    "use strict";
+
+    const chatContainer = document.querySelector('.container');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    function enterPress(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    document.querySelector('.input').addEventListener('keypress', enterPress);
+
+    function addMessage(message, sender = '') {
+      let newMessage = document.createElement('div');
+      newMessage.innerText = message;
+      newMessage.className = 'message' + (sender === 'user' ? ' user-message' : '');
+      let chat = document.querySelector('.chat');
+      chat.appendChild(newMessage);
+      scrollToBottom();
+    }
+
+    function scrollToBottom() {
+      const chatContainer = document.querySelector('.container');
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    async function sendMessage() {
+      let input = document.querySelector('.input');
+      if (input.value.length > 0) {
+
+        try {
+          let r = await fetch('http://192.168.0.102:8080/new_message', {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({message: input.value})
+          })
+
+          let d = await r.json();
+          if (d.ok) {
+            console.log('successfully fetched new message:', input.value);
+            input.value = '';
+          } else {
+            throw new Error('failed to send message')
+          }
+        } catch (error) {
+          console.error(error.message);
+        }
+      }
+    }
+
+    async function getHistory() {
+      try {
+        let r = await fetch('http://192.168.0.102:8080/history');
+        let d = await r.json();
+
+        if (d.ok) {
+          let messages = d.messages.reverse()
+          while (messages.length > 0) {
+            addMessage(messages.pop());
+          }
+        } else {
+          throw new Error('failed to get history');
+        }
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+
+    async function poll() {
+      try {
+        let r = await fetch('http://192.168.0.102:8080/poll');
+        let d = await r.json();
+
+        if (d.ok) {
+          addMessage(d.message);
+          poll();
+        } else {
+          throw new Error('failed to poll')
+        }
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+
+    poll();
+    getHistory();
+
+  </script>
+</body>
+</html>
