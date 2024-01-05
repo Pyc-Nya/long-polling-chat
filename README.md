@@ -1,4 +1,4 @@
-в /src есть config для node_modules
+в /src есть package для node_modules
 
 запускать надо simple_chat.js
 
