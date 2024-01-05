@@ -28,8 +28,10 @@ app.post('/new_message', (req, res) => {
 
   while (clients.length > 0) {
     const client = clients.pop();
-    client.status(200).send(JSON.stringify({ok: true, message: req.body.message}));
-    console.log('message sended');
+    if (!client.headersSent) {
+      client.status(200).send(JSON.stringify({ok: true, message: req.body.message}));
+      console.log('message sended');
+    }
   }
   res.status(200).send(JSON.stringify({ok: true}));
 })
@@ -37,6 +39,11 @@ app.post('/new_message', (req, res) => {
 app.get('/poll', (req, res) => {
   clients.push(res);
   serverLog('new poll', 'GET');
+  setTimeout(() => {
+    if (!res.headersSent) {
+      res.status(200).send(JSON.stringify({ok: true, message: null}));
+    }
+  }, 19 * 1000);
 })
 
 
