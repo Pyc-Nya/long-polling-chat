@@ -3,7 +3,6 @@ const path = require('path');
 const app = express();
 const port = 8080;
 
-
 app.listen(port, '192.168.0.102', () => console.log(`Server listening on port ${port}!`));
 app.use(express.json());
 app.use(express.static('../simple_chat'));
@@ -23,14 +22,14 @@ app.get('/history', (req, res) => {
 
 app.post('/new_message', (req, res) => {
   messages.push(req.body.message);
-  serverLog('new_message', 'POST');
+  serverLog('message', 'POST');
   console.log('clients:', clients.length);
 
   while (clients.length > 0) {
     const client = clients.pop();
     if (!client.headersSent) {
       client.status(200).send(JSON.stringify({ok: true, message: req.body.message}));
-      console.log('message sended');
+      console.log('message sent');
     }
   }
   res.status(200).send(JSON.stringify({ok: true}));
@@ -38,7 +37,7 @@ app.post('/new_message', (req, res) => {
 
 app.get('/poll', (req, res) => {
   clients.push(res);
-  serverLog('new poll', 'GET');
+  serverLog('poll', 'GET');
   setTimeout(() => {
     if (!res.headersSent) {
       res.status(200).send(JSON.stringify({ok: true, message: null}));
