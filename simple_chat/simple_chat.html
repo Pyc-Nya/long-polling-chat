@@ -86,7 +86,7 @@
 
     async function poll() {
       try {
-        let r = await fetch('http://192.168.0.102:8080/poll');
+        let r = await fetch('http://192.168.0.102:8080/poll', {method: "POST"});
         let d = await r.json();
 
         if (d.ok) {

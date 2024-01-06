@@ -35,9 +35,9 @@ app.post('/new_message', (req, res) => {
   res.status(200).send(JSON.stringify({ok: true}));
 })
 
-app.get('/poll', (req, res) => {
+app.post('/poll', (req, res) => {
   clients.push(res);
-  serverLog('poll', 'GET');
+  serverLog('poll', 'POST');
   setTimeout(() => {
     if (!res.headersSent) {
       res.status(200).send(JSON.stringify({ok: true, message: null}));
