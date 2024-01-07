@@ -45,7 +45,7 @@
       if (input.value.length > 0) {
 
         try {
-          let r = await fetch('http://192.168.0.102:8080/new_message', {
+          let r = await fetch('http://192.168.0.104:8080/new_message', {
             method: "POST",
             headers: {
               'Content-Type': 'application/json' 
@@ -68,7 +68,7 @@
 
     async function getHistory() {
       try {
-        let r = await fetch('http://192.168.0.102:8080/history');
+        let r = await fetch('http://192.168.0.104:8080/history');
         let d = await r.json();
 
         if (d.ok) {
@@ -86,7 +86,7 @@
 
     async function poll() {
       try {
-        let r = await fetch('http://192.168.0.102:8080/poll', {method: "POST"});
+        let r = await fetch('http://192.168.0.104:8080/poll', {method: "POST"});
         let d = await r.json();
 
         if (d.ok) {

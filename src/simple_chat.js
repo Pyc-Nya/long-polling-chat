@@ -1,9 +1,11 @@
+import { addMessage, addUser, getMessages, getUsers } from './simple_db_handling';
+
 const express = require('express');
 const path = require('path');
 const app = express();
 const port = 8080;
 
-app.listen(port, '192.168.0.102', () => console.log(`Server listening on port ${port}!`));
+app.listen(port, '192.168.0.104', () => console.log(`Server listening on port ${port}!`));
 app.use(express.json());
 app.use(express.static('../simple_chat'));
 
