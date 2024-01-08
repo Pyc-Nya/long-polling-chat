@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import { useSign } from '../Hooks/Sign';
-import { UserDataStore, ActiveStore } from '../stores';
+import { UserDataStore, ActiveStore } from '../../stores';
 import BackButon from './BackButton';
 
 const Sign = observer(() => {
@@ -16,9 +16,9 @@ const Sign = observer(() => {
           placeholder={`Enter your ${ActiveStore.active === 'signUp' ? 'name' : 'id'}`}
           onKeyUp={handleEnterUp} 
           onChange={(e) => setInput(e.target.value)} />
-        <div className="sign__confirm-button" 
+        <div className="sign__confirm-button sign-button" 
           onClick={handleClick}>
-          &gt;
+          Send
         </div>
         <BackButon />
       </div>

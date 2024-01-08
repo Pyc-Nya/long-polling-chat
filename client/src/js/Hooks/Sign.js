@@ -1,4 +1,4 @@
-import { UserDataStore, ActiveStore } from '../stores';
+import { UserDataStore, ActiveStore } from '../../stores';
 import { useState, useEffect } from 'react'
 import { toJS } from 'mobx';
 
@@ -18,7 +18,7 @@ const useSign = () => {
   }
 
   async function handleSignUp(name) {
-    let r = await fetch('http://192.168.0.104:8080/sign_up', {
+    let r = await fetch('http://localhost:8080/sign_up', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const useSign = () => {
   }
 
   async function handleSignIn(id) {
-    let r = await fetch('http://192.168.0.104:8080/sign_in', {
+    let r = await fetch('http://localhost:8080/sign_in', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

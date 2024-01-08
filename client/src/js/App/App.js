@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { ActiveStore } from '../stores';
+import { ActiveStore } from '../../stores';
 import Auth from '../JSX/Auth';
 import Sign from '../JSX/Sign';
 import WrongId from '../JSX/WrongId';

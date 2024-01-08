@@ -8,7 +8,7 @@ app.use(cors({
   origin: 'http://localhost:3000' 
 }));
 
-app.listen(port, '192.168.0.104', () => console.log(`Server listening on port ${port}!`));
+app.listen(port, '0.0.0.0', () => console.log(`Server listening on port ${port}!`));
 app.use(express.json());
 
 const clients = [];
@@ -64,11 +64,11 @@ app.post('/new_message', async (req, res) => {
 app.post('/poll', (req, res) => {
   clients.push(res);
   serverLog('poll', 'POST');
-  setTimeout(() => {
-    if (!res.headersSent) {
-      res.status(200).send(JSON.stringify({ok: true, message: null}));
-    }
-  }, 19 * 1000);
+  // setTimeout(() => {
+  //   if (!res.headersSent) {
+  //     res.status(200).send(JSON.stringify({ok: true, message: null}));
+  //   }
+  // }, 19 * 1000);
 })
 
 
