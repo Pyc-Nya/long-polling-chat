@@ -1,20 +1,39 @@
-import { addMessage, addUser, getMessages, getUsers } from './simple_db_handling';
+import { addMessage, addUser, getMessages, getUsers } from './simple_db_handling.js';
+import express from 'express';
+import cors from 'cors';
 
-const express = require('express');
-const path = require('path');
 const app = express();
 const port = 8080;
+app.use(cors({
+  origin: 'http://localhost:3000' 
+}));
 
 app.listen(port, '192.168.0.104', () => console.log(`Server listening on port ${port}!`));
 app.use(express.json());
-app.use(express.static('../simple_chat'));
 
 const clients = [];
-const messages = [];
+const messages = await getMessages();
+const users = await getUsers();
 
 app.get('/', (req, res) => {
   serverLog('to the homepage', "GET");
-  res.sendFile(path.join(__dirname, '..', 'simple_chat', 'simple_chat.html'));
+  res.status(200).send('404');
+});
+
+app.post('/sign_up', async (req, res) => {
+  serverLog('sign_up', "POST");
+  const userName = req.body.name;
+  const newUser = await addUser(userName);
+  users.push(newUser);
+  res.status(200).send(JSON.stringify({ok: true, id: newUser.id}));
+});
+
+app.post('/sign_in', async (req, res) => {
+  serverLog('sign_in', "POST");
+  const userId = req.body.id;
+  const user = users.find(user => +user.id === +userId);
+  const userName = user?.name ?? null;
+  res.status(200).send(JSON.stringify({ok: true, name: userName}));
 });
 
 app.get('/history', (req, res) => {
@@ -22,15 +41,20 @@ app.get('/history', (req, res) => {
   res.send(JSON.stringify({ok: true, messages: messages}));
 })
 
-app.post('/new_message', (req, res) => {
-  messages.push(req.body.message);
+app.post('/new_message', async (req, res) => {
   serverLog('message', 'POST');
   console.log('clients:', clients.length);
+
+  const userId = req.body.id;
+  const message = req.body.message;
+  const userName = req.body.name;
+  const newMessage = await addMessage(userId, message, userName);
+  messages.push(newMessage);
 
   while (clients.length > 0) {
     const client = clients.pop();
     if (!client.headersSent) {
-      client.status(200).send(JSON.stringify({ok: true, message: req.body.message}));
+      client.status(200).send(JSON.stringify({ok: true, message: message, id: userId, name: userName}));
       console.log('message sent');
     }
   }

@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+import { promises as fs } from 'fs';
 
 const PATH_TO_USERS = 'simple_chat_data/users.json';
 const PATH_TO_MESSAGES = 'simple_chat_data/messages.json';
@@ -18,7 +18,7 @@ async function getUsers() {
 async function addUser(name) {
   const users = await getUsers();
   const lastId = users.length > 0 ? users[users.length - 1].id : 0;
-  const newUser = { id: lastId + 1, name };
+  const newUser = { id: lastId + 1, name: name };
   users.push(newUser);
 
   try {
@@ -41,9 +41,9 @@ async function getMessages() {
 }
 
 // Добавление нового сообщения
-async function addMessage(userId, text) {
+async function addMessage(userId, message, name) {
   const messages = await getMessages();
-  const newMessage = { userId, text };
+  const newMessage = { id: userId, name: name, message: message };
   messages.push(newMessage);
 
   try {
