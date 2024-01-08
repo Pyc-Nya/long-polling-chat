@@ -1,15 +1,23 @@
 перед началом:
+
 cd server\src
+
 npm i
+
 cd ..\..\client
+
 npm i
 
 для запуска сервера:
+
 cd server\src
+
 node simple_chat.js
 
 для запуска клиента:
+
 cd client
+
 npm start
 
 в самом simple_chat.js и в фетчах на клиенте скорее всего потребуется поменять мой локальный ip на какой-то другой,
