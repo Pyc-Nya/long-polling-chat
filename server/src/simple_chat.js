@@ -64,11 +64,12 @@ app.post('/new_message', async (req, res) => {
 app.post('/poll', (req, res) => {
   clients.push(res);
   serverLog('poll', 'POST');
-  // setTimeout(() => {
-  //   if (!res.headersSent) {
-  //     res.status(200).send(JSON.stringify({ok: true, message: null}));
-  //   }
-  // }, 19 * 1000);
+  setTimeout(() => {
+    if (!res.headersSent) {
+      clients.shift();
+      res.status(200).send(JSON.stringify({ok: true, message: null}));
+    }
+  }, 19 * 1000);
 })
 
 

@@ -15,7 +15,9 @@ const useChat = () => {
   }, [messages]);
 
   const handleClick = () => {
-    sendMessage(input)
+    if (input !== '') {
+      sendMessage(input)
+    }
   }
 
   const handleEnterUp = (e) => {
