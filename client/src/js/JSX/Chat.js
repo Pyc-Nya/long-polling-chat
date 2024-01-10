@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react';
-import { ActiveStore, UserDataStore } from '../../stores';
-import BackButon from "./BackButton"
+import { UserDataStore } from '../../stores';
 import { useChat } from '../Hooks/Chat';
 
 
@@ -11,13 +10,14 @@ const Chat = observer(() => {
     setInput,
     input,
     messagesEndRef,
-    handleClick
+    handleMessageClick,
+    handleCloseClick
   } = useChat();
 
   return (
     <div className="chat">
       <div className='chat__title'>
-        <div onClick={ActiveStore.setActiveAuth} className="chat__back">✖</div>
+        <div onClick={handleCloseClick} className="chat__back">✖</div>
         <div className='chat__chat'>Chat</div>
         <div className='chat__user'>User: {UserDataStore.userData.name}</div>
       </div>
@@ -46,7 +46,7 @@ const Chat = observer(() => {
           className="chat__input"
           onKeyUp={handleEnterUp}
           onChange={(e) => setInput(e.target.value)} />
-          <div onClick={handleClick} className="chat__send-button">
+          <div onClick={handleMessageClick} className="chat__send-button">
             &gt;
           </div>
       </div>

@@ -1,13 +1,19 @@
 import { UserDataStore, ActiveStore } from '../../stores';
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { toJS } from 'mobx';
 
 const useSign = () => {
   const [input, setInput] = useState('');
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (input !== '') {
-      (ActiveStore.active === 'signUp') ? handleSignUp(input) : handleSignIn(input)
+      if (ActiveStore.active === 'signUp') {
+        await handleSignUp(input)
+      } else {
+        await handleSignIn(input)
+      }
+      localStorage.setItem('id', UserDataStore.userData.id);
+      localStorage.setItem('name', UserDataStore.userData.name);
     }
   }
 

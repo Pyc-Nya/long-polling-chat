@@ -1,11 +1,13 @@
 import { observer } from 'mobx-react';
 import { ActiveStore } from '../../stores';
+import { useApp } from '../Hooks/App';
 import Auth from '../JSX/Auth';
 import Sign from '../JSX/Sign';
 import WrongId from '../JSX/WrongId';
 import Chat from '../JSX/Chat';
 
 const App = observer(() => {
+  useApp();
   return (
     <>
     <div className="container">

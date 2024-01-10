@@ -1,4 +1,4 @@
-import { UserDataStore } from '../../stores';
+import { UserDataStore, ActiveStore } from '../../stores';
 import { useState, useEffect, useRef } from 'react'
 
 const useChat = () => {
@@ -14,15 +14,20 @@ const useChat = () => {
     scrollToBottom(); 
   }, [messages]);
 
-  const handleClick = () => {
+  const handleMessageClick = () => {
     if (input !== '') {
       sendMessage(input)
     }
   }
 
+  const handleCloseClick = () => {
+    ActiveStore.setActiveAuth();
+    localStorage.clear();
+  }
+
   const handleEnterUp = (e) => {
     if (e.key === 'Enter') {
-      handleClick();
+      handleMessageClick();
     }
   }
 
@@ -78,7 +83,8 @@ const useChat = () => {
     setInput,
     input,
     messagesEndRef,
-    handleClick
+    handleMessageClick,
+    handleCloseClick
   }
 }
 
